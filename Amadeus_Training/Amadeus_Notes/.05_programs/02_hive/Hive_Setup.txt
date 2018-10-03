@@ -1,0 +1,13 @@
+Extract /home/user1/Downloads/07_Packages/apache-hive-1.2.1-bin.tar.gz
+
+Place the directory in /home/user1/HadoopInstallations/
+
+Update .bashrc file with the following
+
+# Set HIVE_HOME
+export HIVE_HOME=/home/user1/HadoopInstallations/apache-hive-1.2.1-bin
+export PATH=$PATH:$HIVE_HOME/bin
+
+Save and close .bashrc
+
+Source the .bashrc

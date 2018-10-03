@@ -1,0 +1,15 @@
+WebUI Ports:
+
+Spark Context: http://localhost:4040
+
+Spark HistoryServer: http://localhost:18080
+
+*********************** WordCount ***********************
+
+scala> val textFile = sc.textFile("hdfs://localhost:9000/wc/SampleFile.txt")
+
+scala> val counts = textFile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(_ + _)
+
+scala> counts.saveAsTextFile("hdfs://localhost:9000/wc/SPARK_OP")
+
+

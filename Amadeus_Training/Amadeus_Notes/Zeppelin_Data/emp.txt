@@ -1,0 +1,12 @@
+1,john,us,1000
+2,mike,ind,2000
+3,rose,us,1603
+4,peter,aus,6012
+5,josh,ind,6396
+6,amria,us,4500
+7,abe,ind,7656
+8,lcaey,aus,9086
+9,lala,aus,4587
+10,gail,us,9658
+11,agalen,aus,9658
+12,shabari,uk,4935

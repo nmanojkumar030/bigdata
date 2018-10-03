@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cd /home/user1/Downloads/07_Packages/
+chmod 777 /home/user1/HadoopInstallations/
+tar -xvzf /home/user1/Downloads/07_Packages/hadoop-2.7.1.tar.gz 
+wait
+mv /home/user1/Downloads/07_Packages/hadoop-2.7.1 /home/user1/HadoopInstallations/
+cp /home/user1/Downloads/.05_Programs/09_Installer/Backup/core-site.xml /home/user1/HadoopInstallations/hadoop-2.7.1/etc/hadoop/core-site.xml
+cp /home/user1/Downloads/.05_Programs/09_Installer/Backup/hdfs-site.xml /home/user1/HadoopInstallations/hadoop-2.7.1/etc/hadoop/hdfs-site.xml
+cp /home/user1/Downloads/.05_Programs/09_Installer/Backup/mapred-site.xml /home/user1/HadoopInstallations/hadoop-2.7.1/etc/hadoop/mapred-site.xml
+cp /home/user1/Downloads/.05_Programs/09_Installer/Backup/yarn-site.xml /home/user1/HadoopInstallations/hadoop-2.7.1/etc/hadoop/yarn-site.xml
+cp /home/user1/Downloads/.05_Programs/09_Installer/Backup/hadoop-env.sh /home/user1/HadoopInstallations/hadoop-2.7.1/etc/hadoop/hadoop-env.sh
+cp /home/user1/Downloads/.05_Programs/09_Installer/Backup/bash_bak /home/user1/.bashrc
+wait
+source ~/.bashrc
+wait
+hdfs namenode -format
+cd $HADOOP_HOME/sbin
+./start-all.sh
+./mr-jobhistory-daemon.sh start historyserver
+jps

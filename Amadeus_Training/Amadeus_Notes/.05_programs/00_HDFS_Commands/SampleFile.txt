@@ -1,0 +1,3 @@
+Welcome to Hadoop
+Learning Hadoop is fun
+Hadoop Hadoop Hadoop is the buzz

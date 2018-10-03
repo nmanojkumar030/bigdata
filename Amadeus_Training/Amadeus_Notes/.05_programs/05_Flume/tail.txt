@@ -1,0 +1,10 @@
+
+***************** Run the following commands *****************
+
+Terminal 1:
+
+flume-ng agent -n tail1 -c conf -f /home/user1/HadoopInstallations/apache-flume-1.6.0-bin/conf/tail.conf
+
+Terminal 2:
+
+/home/user1/Downloads/.05_Programs/05_Flume/accesslog_gen.sh /tmp/access_log

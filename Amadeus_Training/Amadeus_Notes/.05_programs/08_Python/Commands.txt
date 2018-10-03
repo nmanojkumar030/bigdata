@@ -1,0 +1,1 @@
+yarn jar /home/user1/HadoopInstallations/hadoop-2.7.1/share/hadoop/tools/lib/hadoop-streaming-2.7.1.jar -file /home/user1/Downloads/.05_Programs/08_Python/map.py -mapper map.py -file /home/user1/Downloads/.05_Programs/08_Python/reduce.py -reducer reduce.py -input /wc/SampleFile.txt -output /wc/SamplePy

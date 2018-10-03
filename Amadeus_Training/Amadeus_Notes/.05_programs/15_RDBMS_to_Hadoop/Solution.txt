@@ -1,0 +1,222 @@
+*************** Terminal 1: (MySQL) *************** 
+
+mysql -u root
+
+create database retail;
+
+use retail;
+
+show tables;
+
+*************** Terminal 2: *************** 
+
+mysql -u root retail < /home/user1/Downloads/.05_Programs/15_RDBMS_to_Hadoop/retail_db.sql
+
+sqoop import-all-tables -m 1 --connect jdbc:mysql://localhost:3306/retail --username=root --compression-codec=snappy --as-avrodatafile --warehouse-dir=/user/hive/warehouse
+
+hadoop fs -ls /user/hive/warehouse  
+
+hadoop fs -ls /user/hive/warehouse/categories/  
+
+ls -l *.avsc 
+
+hadoop fs -mkdir /user/examples 
+
+hadoop fs -put ~/*.avsc /user/examples/
+
+*************** Terminal 3: (Hive) *************** 
+
+hive 
+
+CREATE EXTERNAL TABLE categories 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.avro.AvroSerDe' 
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat' 
+LOCATION 'hdfs:///user/hive/warehouse/categories' 
+TBLPROPERTIES ('avro.schema.url'='hdfs://localhost:9000/user/examples/categories.avsc'); 
+
+ 
+CREATE EXTERNAL TABLE customers 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.avro.AvroSerDe' 
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat' 
+LOCATION 'hdfs:///user/hive/warehouse/customers' 
+TBLPROPERTIES ('avro.schema.url'='hdfs://localhost:9000/user/examples/customers.avsc'); 
+
+
+CREATE EXTERNAL TABLE departments 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.avro.AvroSerDe' 
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat' 
+LOCATION 'hdfs:///user/hive/warehouse/departments' 
+TBLPROPERTIES ('avro.schema.url'='hdfs://localhost:9000/user/examples/departments.avsc'); 
+
+ 
+CREATE EXTERNAL TABLE orders 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.avro.AvroSerDe' 
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat' 
+LOCATION 'hdfs:///user/hive/warehouse/orders' TBLPROPERTIES ('avro.schema.url'='hdfs://localhost:9000/user/examples/orders.avsc'); 
+
+
+CREATE EXTERNAL TABLE order_items 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.avro.AvroSerDe' 
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat' 
+LOCATION 'hdfs:///user/hive/warehouse/order_items' TBLPROPERTIES ('avro.schema.url'='hdfs://localhost:9000/user/examples/order_items.avsc'); 
+
+
+CREATE EXTERNAL TABLE products 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.avro.AvroSerDe' 
+STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat' 
+OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat' 
+LOCATION 'hdfs:///user/hive/warehouse/products' 
+TBLPROPERTIES ('avro.schema.url'='hdfs://localhost:9000/user/examples/products.avsc');
+
+
+show tables;
+
+
+describe products:
+
+
+-- Most popular product categories 
+select c.category_name, count(order_item_quantity) as count 
+from order_items oi 
+inner join products p on oi.order_item_product_id = p.product_id 
+inner join categories c on c.category_id = p.product_category_id 
+group by c.category_name 
+order by count desc 
+limit 10;
+
+
+-- top 10 revenue generating products 
+select p.product_id, p.product_name, r.revenue 
+from products p 
+inner join 
+(select oi.order_item_product_id, sum(cast(oi.order_item_subtotal as float)) as revenue 
+from order_items oi 
+inner join orders o 
+on oi.order_item_order_id = o.order_id 
+where o.order_status <> 'CANCELED' 
+and o.order_status <> 'SUSPECTED_FRAUD' 
+group by order_item_product_id) r
+on p.product_id = r.order_item_product_id 
+order by r.revenue desc 
+limit 10;
+
+*************** Terminal 2: *************** 
+
+hadoop fs -mkdir /user/hive/warehouse/original_access_logs
+ 
+hadoop fs -put /home/user1/Downloads/.05_Programs/15_RDBMS_to_Hadoop/access.log.2 /user/hive/warehouse/original_access_logs 
+
+hadoop fs -ls /user/hive/warehouse/original_access_logs 
+
+hadoop fs -tail /user/hive/warehouse/original_access_logs/access.log.2
+
+
+*************** Terminal 3: (Hive) ***************
+
+set hive.support.sql11.reserved.keywords=false;
+
+
+CREATE EXTERNAL TABLE intermediate_access_logs ( 
+ip STRING, 
+date STRING, 
+method STRING, 
+url STRING, 
+http_version STRING, 
+code1 STRING, 
+code2 STRING, 
+dash STRING, 
+user_agent STRING) 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe' 
+WITH SERDEPROPERTIES ( "input.regex" = "([^ ]*) - - \\[([^\\]]*)\\] \"([^\ ]*) ([^\ ]*) ([^\ ]*)\" (\\d*) (\\d*) \"([^\"]*)\" \"([^\"]*)\"", "output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s %8$s %9$s" ) 
+LOCATION '/user/hive/warehouse/original_access_logs';
+
+
+ADD JAR /home/user1/Downloads/.05_Programs/15_RDBMS_to_Hadoop/hive-contrib.jar;
+
+
+CREATE EXTERNAL TABLE tokenized_access_logs ( 
+ip STRING, 
+date STRING, 
+method STRING, 
+url STRING, 
+http_version STRING, 
+code1 STRING, 
+code2 STRING, 
+dash STRING, 
+user_agent STRING) 
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY ',' 
+LOCATION '/user/hive/warehouse/tokenized_access_logs';
+
+
+INSERT OVERWRITE TABLE tokenized_access_logs SELECT * FROM intermediate_access_logs;
+
+
+select count(*) as cnt, url from tokenized_access_logs where url like '%\/product\/%' group by url order by cnt desc;
+
+*************** Terminal 4: (scala) ***************
+
+cd $SPARK_HOME/bin
+
+spark-shell --jars /home/user1/Downloads/.05_Programs/15_RDBMS_to_Hadoop/avro-mapred.jar --conf spark.serializer=org.apache.spark.serializer.KryoSerializer
+
+
+import org.apache.avro.generic.GenericRecord
+
+import org.apache.avro.mapred.{AvroInputFormat, AvroWrapper} 
+
+import org.apache.hadoop.io.NullWritable 
+
+val warehouse = "hdfs://localhost:9000/user/hive/warehouse/"
+
+val order_items_path = warehouse + "order_items" 
+
+val order_items = sc.hadoopFile[AvroWrapper[GenericRecord], NullWritable, AvroInputFormat[GenericRecord]](order_items_path) 
+
+val products_path = warehouse + "products" 
+
+val products = sc.hadoopFile[AvroWrapper[GenericRecord], NullWritable, AvroInputFormat[GenericRecord]](products_path)
+
+val orders = order_items.map { x => (
+     x._1.datum.get("order_item_product_id"), 
+    (x._1.datum.get("order_item_order_id"), x._1.datum.get("order_item_quantity"))) }.join( 
+  products.map { x => ( 
+    x._1.datum.get("product_id"), 
+    (x._1.datum.get("product_name"))) 
+  } 
+).map(x => ( 
+    scala.Int.unbox(x._2._1._1), // order_id 
+    ( 
+        scala.Int.unbox(x._2._1._2), // quantity 
+        x._2._2.toString // product_name 
+    ) 
+)).groupByKey()
+
+
+val cooccurrences = orders.map(order => 
+  ( 
+    order._1, 
+    order._2.toList.combinations(2).map(order_pair => 
+        ( 
+            if (order_pair(0)._2 < order_pair(1)._2) (order_pair(0)._2, order_pair(1)._2) else (order_pair(1)._2, 
+
+order_pair(0)._2), 
+            order_pair(0)._1 * order_pair(1)._1 
+        ) 
+    ) 
+  ) 
+) 
+
+val combos = cooccurrences.flatMap(x => x._2).reduceByKey((a, b) => a + b) 
+
+val mostCommon = combos.map(x => (x._2, x._1)).sortByKey(false).take(10)
+
+println(mostCommon.deep.mkString("\n"))
+
+
+

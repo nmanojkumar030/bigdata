@@ -1,0 +1,23 @@
+package hiveUDF;
+
+import org.apache.hadoop.hive.ql.exec.UDF;
+import org.apache.hadoop.io.Text;
+
+public final class LowerA extends UDF {
+	public Text evaluate(final Text s) {
+		if (s == null) {
+			return null;
+		}
+		return new Text(s.toString().toLowerCase());
+	}
+}
+
+
+ADD JAR /home/user1/Documents/LowerA.jar;
+
+
+create temporary function LowerA AS 'hiveUDF.LowerA';
+
+create external table table1(col1 string) row format delimited fields terminated by '\n' location '/wc';
+
+select LowerA(col1) from table1;

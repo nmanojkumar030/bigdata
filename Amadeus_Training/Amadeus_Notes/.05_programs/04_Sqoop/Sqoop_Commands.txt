@@ -1,0 +1,50 @@
+Connect with MySQL
+------------------------------------------------------------
+On Terminal 1
+------------------------------------------------------------
+$ mysql -u root 
+
+#On MySQL shell, run the following commands to create a database, table and insert some records
+show databases;
+
+create database sample;
+
+use sample;
+
+------------------------------------------------------------
+On Terminal 2
+------------------------------------------------------------
+
+mysql -u root sample < /home/user1/Downloads/.05_Programs/04_Sqoop/categories.sql
+
+sqoop list-databases --connect jdbc:mysql://localhost:3306 --username root -P 
+
+sqoop list-tables --connect jdbc:mysql://localhost:3306/sample --username root -P
+
+sqoop import --connect jdbc:mysql://localhost:3306/sample --username root -P --table categories --target-dir /categories_import -m 1
+
+hadoop fs -cat /categories_import/part-m-00000
+
+sqoop import --connect jdbc:mysql://localhost:3306/sample --username root -P --table categories --target-dir /categories_import_p -m 4
+
+hadoop fs -ls /categories_import_p
+hadoop fs -cat /categories_import_p/part-m-00000
+hadoop fs -cat /categories_import_p/part-m-00001
+hadoop fs -cat /categories_import_p/part-m-00002
+hadoop fs -cat /categories_import_p/part-m-00003
+
+****************   Sqoop Export ****************
+On Terminal 1 (MySQL)
+
+CREATE TABLE categories_new(category_id int(11) PRIMARY KEY, category_dept_id int(11), category_name varchar(50));
+
+select * from categories_new;
+
+On Terminal 2
+
+sqoop export --connect jdbc:mysql://localhost:3306/sample --username root --P --table categories_new --export-dir /categories_import_p
+
+On Terminal 1 (MySQL)
+
+select * from categories_new;
+

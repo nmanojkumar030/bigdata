@@ -1,0 +1,27 @@
+Extract /home/user1/Downloads/07_Packages/hbase-1.1.2-bin.tar.gz
+
+Place the directory in /home/user1/HadoopInstallations/
+
+Update .bashrc file with the following
+
+# Set HBASE_HOME
+export HBASE_HOME=/home/user1/HadoopInstallations/hbase-1.1.2
+export PATH=$PATH:$HBASE_HOME/bin
+
+Save and close .bashrc
+
+Source the .bashrc
+
+
+******* Update the hbase-site.xml with the following ******* 
+
+<configuration>
+	<property>
+		<name>hbase.rootdir</name>
+		<value>hdfs://localhost:9000/hbase</value>
+	</property>
+</configuration>
+
+******* Update the hbase-env.sh with the following ******* 
+
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64

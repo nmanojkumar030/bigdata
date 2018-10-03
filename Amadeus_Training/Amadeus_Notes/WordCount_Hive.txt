@@ -1,0 +1,31 @@
+table1 --> Table Name
+
+col1 --> Column Name
+
+LATERAL VIEW explode --> Used together
+
+explode - takes 1 input, generates zero or more output records -- UDTF
+
+split function - splits based on the specified delimiter
+
+LATERAL VIEW - consolidates the output of explode into a Virtual Table ltable
+
+word --> Field Name for ltable
+
+ltable
+
+word
+
+Welcome
+to
+Hadoop
+Learning 
+Hadoop 
+is 
+fun
+Hadoop 
+Hadoop 
+Hadoop 
+is 
+the 
+buzz

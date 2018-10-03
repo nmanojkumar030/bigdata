@@ -1,0 +1,54 @@
+----------------------------------------------------------------------------------------
+
+Import a mysql table into Hbase help of sqoop
+*********************************************
+
+Step 1: Open the terminal and Enter into the mysql client
+	
+	$  mysql -u root  
+
+
+# Use the sample database.
+	
+      mysql> use sample;
+
+
+# Then create a table "customercontactinfo" with the column name customer number(customernum) and customer name(customername)
+
+     mysql> create table customercontactinfo( customernum varchar(100),customername varchar(100));
+
+
+# Insert values in the table "customercontactinfo"
+
+	mysql> insert into customercontactinfo values('1000','Raj');
+	mysql> insert into customercontactinfo values('2000','Kumar');
+
+--------------------------------------------------------------------------------------------------------------------
+
+Step 2: Start hbase
+
+	$ start-hbase.sh
+	
+	$ hbase shell
+
+# Create a table in the Hbase - customercontactinfo with the column family name CustomerName , ContactInfo and ProductNums ;
+
+
+hbase(main):001:0>create 'customercontactinfo','CustomerName'
+
+--------------------------------------------------------------------------------------------------------------------
+
+Step 3:  Run the below command for import mysql data to hbase table
+
+ $ sqoop import --connect jdbc:mysql://localhost:3306/sample --username root  -P  --table customercontactinfo  --columns "customernum,customername" --hbase-table customercontactinfo --column-family CustomerName --hbase-row-key customernum -m 1
+
+--------------------------------------------------------------------------------------------------------------------	
+
+Step 4: check output, open the hbase shell and scan the table.
+
+Command :
+	hbase(main):001:0> scan 'customercontactinfo'
+
+You will get your imported data. 
+
+--------------------------------------------------------------------------------------------------

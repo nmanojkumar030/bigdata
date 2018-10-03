@@ -1,0 +1,61 @@
+hive>> CREATE TABLE ratings (uid INT, mid INT, rating INT, tstamp INT)
+  ROW FORMAT DELIMITED                             
+  FIELDS TERMINATED BY '\t'
+  STORED AS TEXTFILE;
+
+
+2: load the data
+
+hive>> LOAD DATA LOCAL INPATH '/home/user1/Downloads/.05_Programs/11_Project2/Movie_Data.txt' OVERWRITE INTO TABLE ratings;
+hive>> select * from ratings;
+
+	
+
+
+3: Case 1 :  Only use ratings which are > 3
+
+
+	hive>> CREATE TABLE ratings2 (uid INT, mid INT);
+
+	hive>> INSERT OVERWRITE TABLE ratings2
+  SELECT uid, mid FROM ratings
+  WHERE rating > 3;
+
+
+4: For each (uid,mid) pair, find all users who have the same mid
+-- Then for each such record, find all movies with the same uid.
+
+
+	hive>> CREATE TABLE mid_pairs (mid INT, rmid INT);
+
+	hive>> INSERT OVERWRITE TABLE mid_pairs 
+  SELECT a.mid, c.mid 
+  FROM ratings2 a JOIN ratings2 b ON (a.mid = b.mid) 
+                  JOIN ratings2 c ON (b.uid = c.uid);
+
+
+--> -- Eliminate pairs where the source and related mid are identical.
+
+	hive>>  CREATE TABLE mid_pairs2 (mid INT, rmid INT);
+
+	hive>> INSERT OVERWRITE TABLE mid_pairs2
+  SELECT mid, rmid
+  FROM mid_pairs
+  WHERE mid != rmid;
+
+
+5:  Group by (mid, rmid) and count occurrences
+
+	hive>> CREATE TABLE mid_counts (mid INT, rmid INT, cnt INT);
+
+	hive>> INSERT OVERWRITE TABLE mid_counts
+  SELECT mid, rmid, COUNT(rmid)
+  FROM mid_pairs2
+  GROUP BY mid, rmid;
+
+	hive>> select * from mid_counts;
+
+
+	hive>> DROP TABLE ratings2;
+	hive>> DROP TABLE mid_pairs;
+	hive>> DROP TABLE mid_pairs2;

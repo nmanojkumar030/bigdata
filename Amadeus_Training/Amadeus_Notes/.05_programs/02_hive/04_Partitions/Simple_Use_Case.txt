@@ -1,0 +1,47 @@
+==========================
+find sales based on age group
+==========================
+
+create table customer(custno string, firstname string, lastname string, age int,profession string)
+row format delimited
+fields terminated by ',';
+
+load data local inpath '/home/user1/Downloads/.05_Programs/02_Hive/04_Partitions/custs.txt' into table customer;
+
+create table out1 (custno int,firstname string,age int,profession string,amount double,product string)
+row format delimited                                                                                  
+fields terminated by ',';   
+
+insert overwrite table out1                                                                           
+select a.custno,a.firstname,a.age,a.profession,b.amount,b.product                                     
+from customer a JOIN txnrecords b ON a.custno = b.custno;     
+
+select * from out1 limit 10;
+
+create table out2 (custno int,firstname string,age int,profession string,amount double,product string, level string)
+row format delimited                                                                                  
+fields terminated by ',';   
+
+insert overwrite table out2
+select * , case
+ when age<30 then 'low'
+ when age>=30 and age < 50 then 'middle'
+ when age>=50 then 'old' 
+ else 'others'
+end
+from out1;
+
+
+ select * from out2 limit 10; 
+
+ describe out2;  
+
+create table out3 (level string, amount double)                                                                                   
+row format delimited
+fields terminated by ',';
+
+insert overwrite table out3  
+ select level,sum(amount) from out2 group by level;
+
+select * from out3;
+

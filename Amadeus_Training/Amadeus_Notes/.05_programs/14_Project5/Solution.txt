@@ -1,0 +1,23 @@
+Healthcare data analysis in Hive using udf 
+
+-----------------------------------------
+
+
+$ hadoop fs -mkdir /jars
+$ hadoop fs -put /home/user1/Documents/EncryptColumn.jar /jars/
+
+
+hive> CREATE DATABASE healthDB;
+
+hive> USE healthDB;
+
+hive> CREATE TABLE healthCareSampleDS (PatientID INT, Name STRING, DOB STRING, PhoneNumber STRING, EmailAddress STRING, SSN STRING, Gender STRING, Disease STRING, weight FLOAT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+
+
+hive> LOAD DATA LOCAL INPATH '/home/user1/Downloads/.05_Programs/14_Project5/healthcare_Sample_dataset1.csv' INTO table healthCareSampleDS;
+
+
+hive> CREATE FUNCTION Encrypt AS 'hiveUDF.Deidentify' USING JAR 'hdfs://localhost:9000/jars/EncryptColumn.jar';
+
+
+hive> CREATE TABLE healthCareSampleDSDeidentified AS SELECT PatientID, Encrypt(Name), Encrypt(DOB), PhoneNumber, Encrypt(EmailAddress), SSN, Encrypt(Gender), Encrypt(Disease), Encrypt(weight) FROM healthCareSampleDS limit 10;

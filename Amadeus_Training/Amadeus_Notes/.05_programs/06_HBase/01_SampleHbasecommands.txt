@@ -1,0 +1,80 @@
+WebUI Port for HMaster:
+
+http://localhost:16010
+
+
+**** Sample hbase commands ***
+
+version
+
+whoami
+
+list
+
+create 'employee','personal','official'
+
+
+describe 'employee'
+
+put 'employee', 'Emp001', 'official:FirstName','Raj'
+
+
+put 'employee', 'Emp001', 'official:MiddleName','Ravi'
+
+
+put 'employee', 'Emp001', 'official:LastName','Shikar'
+
+
+scan 'employee'
+
+
+put 'employee', 'Emp001', 'personal:email','Shikar@gmail.com'
+
+
+scan 'employee'
+
+
+
+put 'employee', 'Emp001', 'personal:email','Shikar1@gmail.com'
+
+
+
+scan 'employee'
+
+
+status
+
+
+status 'detailed'
+
+
+status 'summary'
+
+
+status 'simple'
+
+
+
+disable 'employee'
+
+
+
+scan 'employee'
+
+
+
+is_disabled 'employee'
+
+
+
+enable 'employee'
+
+
+
+scan 'employee'
+
+
+
+is_disabled 'employee'
+
+

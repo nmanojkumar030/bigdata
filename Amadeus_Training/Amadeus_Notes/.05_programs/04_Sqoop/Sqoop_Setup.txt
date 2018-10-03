@@ -1,0 +1,20 @@
+Extract /home/user1/Downloads/07_Packages/sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz
+
+Place the directory in /home/user1/HadoopInstallations/
+
+Update .bashrc file with the following
+
+# Set SQOOP_HOME
+export SQOOP_HOME=/home/user1/HadoopInstallations/sqoop-1.4.6.bin__hadoop-2.0.4-alpha
+export PATH=$PATH:$SQOOP_HOME/bin
+
+Save and close .bashrc
+
+Source the .bashrc
+
+
+JDBC Connector setup:
+
+Extract /home/user1/Downloads/07_Packages/mysql-connector-java-5.1.37.tar.gz
+
+Copy the /home/user1/Downloads/07_Packages/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar to sqoop/lib dir

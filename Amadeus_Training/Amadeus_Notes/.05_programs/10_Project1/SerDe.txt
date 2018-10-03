@@ -1,0 +1,8 @@
+Apache Hive is a fantastic tool for performing SQL-style queries across data that is often not appropriate for a relational database. For example, semistructured and unstructured data can be queried gracefully via Hive, due to two core features: The first is Hive’s support of complex data types, such as structs, arrays, and unions, in addition to many of the common data types found in most relational databases. The second feature is the SerDe.
+
+What is a SerDe?
+The SerDe interface allows you to instruct Hive as to how a record should be processed. A SerDe is a combination of a Serializer and a Deserializer (hence, Ser-De). The Deserializer interface takes a string or binary representation of a record, and translates it into a Java object that Hive can manipulate. The Serializer, however, will take a Java object that Hive has been working with, and turn it into something that Hive can write to HDFS or another supported system. Commonly, Deserializers are used at query time to execute SELECT statements, and Serializers are used when writing data, such as through an INSERT-SELECT statement.
+
+The SerDe interface is extremely powerful for dealing with data with a complex schema. By utilizing SerDes, any dataset can be made queryable through Hive. 
+
+Refer: http://blog.cloudera.com/blog/2012/12/how-to-use-a-serde-in-apache-hive/

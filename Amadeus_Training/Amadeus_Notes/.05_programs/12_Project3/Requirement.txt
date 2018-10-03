@@ -1,0 +1,22 @@
+Format of Transaction Data
+	data columns separated by ","
+
+Column definition
+	Exchange
+	Stock symbol
+	Date
+	Stock Price Open
+	Stock Price High
+	Stock Price Low
+	Stock price Close 
+	Stock Volume
+	Stock Price Adj Close
+
+	
+List of use cases that can be developed
+
+  Case1: Find the total stock volume of all stock symbol of NYSE 
+
+  Case2: Showing high and low stock prices for a day across all stock
+
+  Case3: Find the highest percentage change for each stock value

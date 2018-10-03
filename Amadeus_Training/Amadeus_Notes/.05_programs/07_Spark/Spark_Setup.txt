@@ -1,0 +1,13 @@
+Extract /home/user1/Downloads/07_Packages/spark-1.5.1-bin-hadoop2.6.tgz
+
+Place the directory in /home/user1/HadoopInstallations/
+
+Update .bashrc file with the following
+
+# Set SPARK_HOME
+export SPARK_HOME=/home/user1/HadoopInstallations/spark-1.5.1-bin-hadoop2.6
+export PATH=$PATH:$SPARK_HOME/bin
+
+Save and clost .bashrc
+
+Source the .bashrc

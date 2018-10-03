@@ -1,0 +1,14 @@
+-> Export the WordCount.java as wc.jar and save in /home/user1/Documents
+
+-> Run the following command on a terminal (Terminal 1) to submit the jar on the cluster
+$ yarn jar /home/user1/Documents/wc.jar WordCount /Sample/SampleFile.txt /Sample/WC
+
+-> Run the following command on another terminal (Terminal 2)
+$ watch jps 
+
+Or 
+
+$ watch 'jps | grep -v jps | sort -k 2'
+
+-> Observe the job execution status in the ResourceManager WebUI
+http://localhost:8088

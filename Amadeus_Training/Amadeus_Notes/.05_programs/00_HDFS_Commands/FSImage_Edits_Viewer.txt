@@ -1,0 +1,11 @@
+
+Offline Edits Viewer
+
+
+hdfs oev -i /home/user1/tmp/dfs/name/current/edits_inprogress_0000000000000000050 -o /home/user1/Documents/edits.xml
+
+
+Offline FSImage Viewer
+
+
+hdfs oiv -p XML -i /home/user1/tmp/dfs/name/current/fsimage_0000000000000000049 -o /home/user1/Documents/fsimage.xml

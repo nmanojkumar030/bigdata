@@ -1,0 +1,4 @@
+swetha,swetha@gmail.com
+tarun,tarun@gmail.in
+nagesh,nagesh@yahoo.com
+venkatesh,venki@gmail.com

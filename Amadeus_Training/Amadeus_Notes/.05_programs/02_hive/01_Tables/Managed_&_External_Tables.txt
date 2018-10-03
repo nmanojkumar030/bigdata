@@ -1,0 +1,24 @@
+*********************************Managed Tables**********************************************************
+show databases;
+
+create database wordcount;
+
+use wordcount;
+
+show tables;
+
+create table table1(col1 string) row format delimited fields terminated by '\n';
+
+load data inpath '/Sample/SampleFile.txt' into table table1;
+
+drop table table1;
+
+*********************************External Tables**********************************************************
+
+External Tables
+
+create external table table1(col1 string) row format delimited fields terminated by '\n' location '/wc';
+
+$ hadoop fs -put /home/user1/Downloads/.05_Programs/01_MapReduce/01_WordCount/SampleFile.txt /wc/
+
+drop table table1;

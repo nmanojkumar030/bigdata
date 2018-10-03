@@ -1,0 +1,7 @@
+val file = sc.textFile("/Sample/emp.txt")
+case class Employee(eid:Int, ename:String, location:String, sal:Int)
+val sal = file.map(_.split(",")).map(e => Employee(e(0).trim.toInt, e(1), e(2), e(3).trim.toInt)).toDF()
+sal.registerTempTable("emp")
+
+%sql
+select location, sum(sal) from emp group by location

@@ -1,0 +1,8 @@
+
+Create a view in a retail database
+----------------------------------
+CREATE VIEW age_45plus AS
+SELECT * FROM customer
+WHERE age>45;
+
+select count(*) from age_45plus;

@@ -1,0 +1,17 @@
+Healthcare Data Set:
+
+Patient sensitive information needs to be encrypted. 
+
+Write a User Defined Function to encrypt a field
+
+Dataset details:
+	Column 1: PatientID
+	Column 2: Name
+	Column 3: Date Of Birth
+	Column 4: PhoneNumber
+	Column 5: EmailAddress
+	Column 6: SSN
+	Column 7: Gender
+	Column 8: Disease
+	Column 9: weight
+	

@@ -1,0 +1,13 @@
+Extract /home/user1/Downloads/07_Packages/pig-0.15.0.tar.gz
+
+Place the directory in /home/user1/HadoopInstallations/
+
+Update .bashrc file with the following
+
+# Set PIG_HOME
+export PIG_HOME=/home/user1/HadoopInstallations/pig-0.15.0
+export PATH=$PATH:$PIG_HOME/bin
+
+Save and close .bashrc
+
+Source the .bashrc

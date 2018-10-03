@@ -1,0 +1,53 @@
+**** Starting Hadoop Services ****
+
+$ cd $HADOOP_HOME/sbin
+$ ./start-dfs.sh
+$ ./start-yarn.sh
+$ ./mr-jobhistory-daemon.sh start historyserver
+$ cd
+$ jps
+
+-----------------------------------
+WebUI Ports
+
+NameNode: hdfs://localhost:50070
+
+ResourceManager: hdfs://localhost:8088
+
+JobHistoryServer: hdfs://localhost:19888
+
+-----------------------------------
+
+$ hadoop fs -ls /
+
+$ hadoop fs -mkdir /Sample
+
+$ hadoop fs -ls /
+
+$ hadoop fs -put /home/user1/Downloads/.05_Programs/00_HDFS_Commands/SampleFile.txt /Sample/
+
+$ hadoop fs -ls /Sample/
+
+$ hadoop fs -cat /Sample/SampleFile.txt
+
+$ hadoop fs -mkdir /Sample1
+
+$ hadoop fs -cp /Sample/SampleFile.txt /Sample1/
+
+$ hadoop fs -rm /Sample/SampleFile.txt
+
+$ hadoop fs -mv /Sample1/SampleFile.txt /Sample/
+
+**** Overriding Block Size ****
+
+$ hadoop fs -D dfs.blocksize=1048576 -put /home/user1/Downloads/.05_Programs/00_HDFS_Commands/SampleBigFile.txt /Sample/
+
+
+**** Stopping Hadoop Services ****
+
+$ cd $HADOOP_HOME/sbin
+$ ./stop-yarn.sh
+$ ./stop-dfs.sh
+$ ./mr-jobhistory-daemon.sh stop historyserver
+$ jps
+$ cd

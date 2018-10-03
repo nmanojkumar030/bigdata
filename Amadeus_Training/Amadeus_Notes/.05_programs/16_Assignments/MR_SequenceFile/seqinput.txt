@@ -1,0 +1,11 @@
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/auto_loan.png
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/blur1.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/credit_card_loan.bmp
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/flower.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/flower1.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/flower2.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/glow_blur.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/home_loan.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/personal_loan.gif
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/sleigh.jpg
+/home/user1/Downloads/.05_Programs/16_Assignments/MR_SequenceFile/images/threshold_blur.jpg

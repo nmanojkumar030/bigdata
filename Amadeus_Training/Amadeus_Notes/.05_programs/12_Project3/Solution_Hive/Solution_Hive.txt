@@ -1,0 +1,79 @@
+hive> create table NYSE1( exchangeName String,stock_symbol String,stock_Date date,stock_price_open double,stock_price_high double,stock_price_low double,stock_price_close double, stock_volume double,stock_price_adj_close double) row format delimited fields terminated by ',';
+
+hive> load data local inpath '/home/user1/Downloads/.05_Programs/12_Project3/NYSE_Data.csv' into table NYSE1;
+
+
+Use Case 1:
+----------
+
+hive> select stock_symbol,sum(stock_volume) from NYSE1 group by stock_symbol;
+
+
+Use Case 2:
+-----------
+
+hive> select stock_symbol,round(max(( stock_price_high - stock_price_low)/stock_price_low) * 100, 2)  from NYSE1 group by stock_symbol;
+
+
+Use Case 3:
+-----------
+
+hive> select stock_date, max(stock_price_close),min(stock_price_close) from NYSE1 group by stock_date;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

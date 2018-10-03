@@ -1,0 +1,23 @@
+﻿Problem Statement:
+
+* Read in a baseball statistics file. This file has all the statistics from 1871–2011 and it contains over 90,000 rows
+
+
+Objective:
+* Compute the highest runs by a player for each year
+
+
+Solution:
+* Copy the file into HDFS Sample Directory and run the following Pig Latin instructions on the grunt> shell
+   grunt> batting = load '/Sample/Batting.csv' using PigStorage(',');
+   grunt> dump batting;
+   grunt> runs = FOREACH batting GENERATE $0 as playerID, $1 as year, $8 as runs;
+   grunt> dump runs;
+   grunt> grp_data = GROUP runs by (year);
+   grunt> dump grp_data;
+   grunt> max_runs = FOREACH grp_data GENERATE group as grp,MAX(runs.runs) as max_runs;
+   grunt> dump max_runs;
+   grunt> join_max_run = JOIN max_runs by ($0, max_runs), runs by (year, runs); 
+   grunt> $ dump join_max_run ;
+   grunt> join_data = FOREACH join_max_run GENERATE $0 as year, $2 as playerID, $1 as runs;  
+   grunt> dump join_data;

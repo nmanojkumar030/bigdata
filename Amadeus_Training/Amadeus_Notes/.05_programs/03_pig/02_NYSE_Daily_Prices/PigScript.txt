@@ -1,0 +1,3 @@
+A = LOAD '/Sample/NYSE_daily_prices_Q.csv' using PigStorage(',') AS (exchange:chararray, symbol:chararray, date:chararray, open:float, high:float, low:float, close:float, volume:int, adj_close:float);
+B = FOREACH A GENERATE symbol, open, close;
+STORE B INTO '/Sample/NYSE_OP';

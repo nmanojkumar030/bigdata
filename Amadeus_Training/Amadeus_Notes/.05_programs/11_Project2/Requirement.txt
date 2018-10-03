@@ -1,0 +1,13 @@
+Movie Data Analysis 
+
+Column 1: uid
+Column 2: mid
+Column 3: rating
+Column 4: timestamp
+
+Requirement 1: Select movies with ratings > 3
+
+Requirement 2: For each (uid,mid) pair, find all users who have the same mid, then for each such record, find all movies with the same uid
+
+Requirement 3: Eliminate pairs where the source and related mid are identical
+
